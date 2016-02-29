@@ -1,0 +1,48 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "ecmaFeatures": {
+    "forOf": true,
+    "jsx": true,
+    "modules": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "arrow-body-style": 0,
+    "comma-dangle": 0,
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "new-cap": [2, {
+      "capIsNewExceptions": [
+        "Immutable.Map",
+        "Map",
+        "Immutable.Set",
+        "Set",
+        "Immutable.List",
+        "List"
+      ]
+    }],
+    "no-multi-spaces": [2, {
+      "exceptions": {
+        "ImportDeclaration": true,
+        "VariableDeclarator": true
+      }
+    }],
+    "space-before-function-paren": [2, "always"],
+    "quote-props": [2, "consistent-as-needed"],
+
+    "babel/generator-star-spacing": 1,
+    "babel/new-cap": 1,
+    "babel/object-shorthand": 1,
+    "babel/arrow-parens": 1,
+    "babel/no-await-in-loop": 1
+  },
+  "plugins": [
+    "babel",
+    "react"
+  ]
+}
