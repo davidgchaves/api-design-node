@@ -2,14 +2,15 @@
   "name": "node-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "nodemon server.js --exec babel-node",
+    "start": "nodemon server/server.js --exec babel-node",
     "lint": "eslint ."
   },
   "author": "David G. Chaves <davidgchaves@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "express": "^4.13.4"
   },
   "devDependencies": {
