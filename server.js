@@ -18,7 +18,7 @@ app.get('/data', (_, res) => {
 });
 
 app.listen(3000, 'localhost', (error) => {
-  error
+  return error
     ? console.log(error)
     : console.log('Listening at http://localhost:3000');
 });
