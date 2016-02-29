@@ -2,8 +2,8 @@
 //  - sends back the `index.html` file on a `GET` to `'/'`
 //  - sends back `jsonData` on a `GET` to `'/data'`
 
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 
 const jsonData = { count: 12, message: 'hey' };
 
