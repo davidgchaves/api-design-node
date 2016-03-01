@@ -24,43 +24,42 @@ lionsRouter.param('id', (req, res, next, lionId) => {
   }
 });
 
-lionsRouter.get('/', (_, res) => {
-  res.json(lions);
-});
+lionsRouter.route('/')
+  .get((_, res) => {
+    res.json(lions);
+  })
+  .post(updateId(), (req, res) => {
+    const lion = req.body;
 
-lionsRouter.get('/:id', (req, res) => {
-  res.json(req.lion);
-});
-
-lionsRouter.post('/', updateId(), (req, res) => {
-  const lion = req.body;
-
-  lions = [...lions, lion];
-  res.json(lion);
-});
-
-lionsRouter.put('/:id', (req, res) => {
-  const lionId = req.params.id;
-  const updateData = req.body;
-
-  // In case you try to modify the id
-  if (updateData.id) { delete updateData.id; }
-
-  lions = lions.map((lion) => {
-    return lion.id !== lionId
-      ? lion
-      : { ...req.lion, ...updateData };
+    lions = [...lions, lion];
+    res.json(lion);
   });
 
-  res.json({ ...req.lion, ...updateData });
-});
+lionsRouter.route('/:id')
+  .get((req, res) => {
+    res.json(req.lion);
+  })
+  .put((req, res) => {
+    const lionId = req.params.id;
+    const updateData = req.body;
 
-lionsRouter.delete('/:id', (req, res) => {
-  const lionId = req.params.id;
+    // In case you try to modify the id
+    if (updateData.id) { delete updateData.id; }
 
-  lions = lions.filter((lion) => lion.id !== lionId);
+    lions = lions.map((lion) => {
+      return lion.id !== lionId
+        ? lion
+        : { ...req.lion, ...updateData };
+    });
 
-  res.json(req.lion);
-});
+    res.json({ ...req.lion, ...updateData });
+  })
+  .delete((req, res) => {
+    const lionId = req.params.id;
+
+    lions = lions.filter((lion) => lion.id !== lionId);
+
+    res.json(req.lion);
+  });
 
 export default lionsRouter;
