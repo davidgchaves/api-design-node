@@ -10,15 +10,23 @@ app.use(bodyParser.json());
 let lions = [];
 let id = 0;
 
+app.param('id', (req, res, next, lionId) => {
+  const lion = lions.filter((l) => l.id === lionId)[0];
+
+  if (lion) {
+    req.lion = lion;
+    next();
+  } else {
+    res.send();
+  }
+});
+
 app.get('/lions', (_, res) => {
   res.json(lions);
 });
 
 app.get('/lions/:id', (req, res) => {
-  const lionId = req.params.id;
-  res.json(
-    lions.filter((lion) => lion.id === lionId)[0]
-  );
+  res.json(req.lion);
 });
 
 app.post('/lions', (req, res) => {
@@ -35,38 +43,19 @@ app.post('/lions', (req, res) => {
 
 app.put('/lions/:id', (req, res) => {
   const updateData = req.body;
-  const lionId = req.params.id;
-  let updatedLion = undefined;
 
   // In case you try to modify the id
   if (updateData.id) { delete updateData.id; }
 
-  lions = lions.map((lion) => {
-    if (lion.id !== lionId) { return lion; }
-
-    updatedLion = { ...lion, ...updateData };
-    return updatedLion;
-  });
-
-  updatedLion
-    ? res.json(updatedLion)
-    : res.send();
+  res.json({ ...req.lion, ...updateData });
 });
 
 app.delete('/lions/:id', (req, res) => {
   const lionId = req.params.id;
-  let deletedLion = undefined;
 
-  lions = lions.map((lion) => {
-    if (lion.id !== lionId) { return lion; }
+  lions = lions.filter((lion) => lion.id !== lionId);
 
-    deletedLion = lion;
-    return deletedLion;
-  });
-
-  deletedLion
-    ? res.json(deletedLion)
-    : res.send();
+  res.json(req.lion);
 });
 
 app.listen(3000, 'localhost', (error) => {
