@@ -10,6 +10,15 @@ app.use(bodyParser.json());
 let lions = [];
 let id = 0;
 
+const updateId = () => {
+  return (req, res, next) => {
+    id += 1;
+    req.body.id = id.toString(10);
+
+    next();
+  };
+};
+
 app.param('id', (req, res, next, lionId) => {
   const lion = lions.filter((l) => l.id === lionId)[0];
 
@@ -29,15 +38,10 @@ app.get('/lions/:id', (req, res) => {
   res.json(req.lion);
 });
 
-app.post('/lions', (req, res) => {
-  const assembleNewLion = () => {
-    id += 1;
-    return { ...req.body, id: id.toString(10) };
-  };
+app.post('/lions', updateId(), (req, res) => {
+  const lion = req.body;
 
-  const lion = assembleNewLion();
   lions = [...lions, lion];
-
   res.json(lion);
 });
 
