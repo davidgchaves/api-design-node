@@ -20,8 +20,4 @@ app.use((error, req, res, next) => {
   }
 });
 
-app.listen(3000, 'localhost', (error) => {
-  return error
-    ? console.log(error)
-    : console.log('Listening at http://localhost:3000');
-});
+export default app;
