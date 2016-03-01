@@ -12,7 +12,10 @@ app.use(bodyParser.json());
 app.use('/lions', lionsRouter);
 
 app.use((error, req, res, next) => {
-  if (error) { res.status(500).send(error); }
+  if (error) {
+    console.log(error.message);
+    res.status(500).send(error);
+  }
 });
 
 app.listen(3000, 'localhost', (error) => {
