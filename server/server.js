@@ -1,73 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import lionsRouter from './lionsRouter';
+
 const app = express();
 
 app.use(express.static('client'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-let lions = [];
-let id = 0;
-
-const updateId = () => {
-  return (req, res, next) => {
-    id += 1;
-    req.body.id = id.toString(10);
-
-    next();
-  };
-};
-
-app.param('id', (req, res, next, lionId) => {
-  const lion = lions.filter((l) => l.id === lionId)[0];
-
-  if (lion) {
-    req.lion = lion;
-    next();
-  } else {
-    next(new Error('lion not found'));
-  }
-});
-
-app.get('/lions', (_, res) => {
-  res.json(lions);
-});
-
-app.get('/lions/:id', (req, res) => {
-  res.json(req.lion);
-});
-
-app.post('/lions', updateId(), (req, res) => {
-  const lion = req.body;
-
-  lions = [...lions, lion];
-  res.json(lion);
-});
-
-app.put('/lions/:id', (req, res) => {
-  const lionId = req.params.id;
-  const updateData = req.body;
-
-  // In case you try to modify the id
-  if (updateData.id) { delete updateData.id; }
-
-  lions = lions.map((lion) => {
-    return lion.id !== lionId
-      ? lion
-      : { ...req.lion, ...updateData };
-  });
-
-  res.json({ ...req.lion, ...updateData });
-});
-
-app.delete('/lions/:id', (req, res) => {
-  const lionId = req.params.id;
-
-  lions = lions.filter((lion) => lion.id !== lionId);
-
-  res.json(req.lion);
-});
+app.use('/lions', lionsRouter);
 
 app.use((error, req, res, next) => {
   if (error) { res.status(500).send(error); }
