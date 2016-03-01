@@ -42,10 +42,17 @@ app.post('/lions', (req, res) => {
 });
 
 app.put('/lions/:id', (req, res) => {
+  const lionId = req.params.id;
   const updateData = req.body;
 
   // In case you try to modify the id
   if (updateData.id) { delete updateData.id; }
+
+  lions = lions.map((lion) => {
+    return lion.id !== lionId
+      ? lion
+      : { ...req.lion, ...updateData };
+  });
 
   res.json({ ...req.lion, ...updateData });
 });
