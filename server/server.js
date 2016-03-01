@@ -58,6 +58,10 @@ app.delete('/lions/:id', (req, res) => {
   res.json(req.lion);
 });
 
+app.use((error, req, res, next) => {
+  if (error) { res.status(500).send(error); }
+});
+
 app.listen(3000, 'localhost', (error) => {
   return error
     ? console.log(error)
