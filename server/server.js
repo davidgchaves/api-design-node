@@ -17,7 +17,7 @@ app.param('id', (req, res, next, lionId) => {
     req.lion = lion;
     next();
   } else {
-    res.send();
+    next(new Error('lion not found'));
   }
 });
 
